@@ -1,0 +1,6 @@
+export {default as RecipeUserService} from './recipe.user.service'
+export {default as MiscService} from './misc.user.service'
+export {default as FollowService} from './follow.user.service'
+export {default as PurchasesUserService} from './purchases.user.service'
+export {default as FavoritesUserService} from './favorites.user.service'
+export {default as TagsService} from './tags.user.service'
