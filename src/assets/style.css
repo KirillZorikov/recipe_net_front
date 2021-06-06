@@ -1,0 +1,104 @@
+.col-card {
+    flex: 0 0 auto;
+    width: 33.3333333333% !important;
+}
+
+@media (max-width: 1095px) {
+    .col-card {
+        width: 100% !important;
+    }
+}
+
+.button {
+    background: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    height: 48px;
+    line-height: 1;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background 0.2s;
+    outline: none;
+    user-select: none;
+    cursor: pointer;
+    width: max-content;
+}
+
+
+.button-light-blue {
+    border: 1px solid #DEE2F2;
+    background: #F0F3FF;
+    color: #4A61DD;
+    padding: 17px 18px;
+    width: 80%;
+}
+
+.button-light-blue:hover {
+    background: #D8DEFF;
+    color: #4A61DD;
+}
+
+
+.wrapper {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.color-red {
+    color: #e35f5f;
+    cursor: pointer;
+}
+
+.color-green {
+    color: #67b168;
+    cursor: pointer;
+}
+
+.color-purple {
+    color: blueviolet;
+    cursor: pointer;
+}
+
+.tag-purple {
+    background: rgba(135, 117, 210, 0.1);
+    color: blueviolet;
+    border-radius: 24px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    cursor: pointer;
+}
+
+.tag-green {
+    background: rgba(73, 182, 78, 0.1);
+    color: #67b168;
+    border-radius: 24px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    cursor: pointer;
+}
+
+.tag-red {
+    background: rgba(234, 146, 99, 0.12);
+    color: #e35f5f;
+    border-radius: 24px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    cursor: pointer;
+}
+
+.star {
+    color: gold;
+    cursor: pointer;
+    font-size: 250%;
+    font-weight: 300;
+}
+
+@media (max-width: 1340px) {
+    .wrapper {
+        width: 100%;
+    }
+}
+

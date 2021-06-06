@@ -1,26 +1,27 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+<!--  <div class="fs-1">-->
+<!--    <i v-if="!checkout" @click="changeColor" class="far fa-circle"></i>-->
+<!--    <i v-else @click="changeColor" class="fas fa-check-circle text-primary"></i>-->
+<!--    <i class="far fa-clock"></i>-->
+<!--    <i class="far fa-user"></i>-->
+<!--  </div>-->
+  <Header/>
+  <router-view/>
+  <Footer/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  components: {Header, Footer},
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import "assets/style.css";
+#app{
+  font-family: 'Montserrat', sans-serif;
 }
 </style>
