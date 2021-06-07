@@ -5,7 +5,7 @@ import {constants} from '../../constants'
 const API_URL = constants.API_URL;
 
 class RecipeUserService {
-    async getListPosts(params) {
+    async getListRecipes(params) {
         return await axios.get(API_URL + `recipes`, {
             headers: authHeader(),
             params: params

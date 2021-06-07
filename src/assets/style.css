@@ -36,12 +36,15 @@
 }
 
 
-.button-light-blue {
+.button-light-blue, .button-transparent {
     border: 1px solid #DEE2F2;
     background: #F0F3FF;
     color: #4A61DD;
-    padding: 17px 18px;
     width: 80%;
+}
+
+.button-transparent {
+    background: none;
 }
 
 .button-blue {
@@ -137,7 +140,7 @@
     width: 100%;
 }
 
-.form-wrapper{
-  min-height: 50vh;
+.form-wrapper {
+    min-height: 50vh;
 }
 

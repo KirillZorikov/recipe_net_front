@@ -9,6 +9,7 @@ export const store = createStore({
     state: {
         page: 1,
         recipes: [],
+        filtering: []
     },
     getters: {
         getPage: state => {
@@ -17,13 +18,19 @@ export const store = createStore({
         getRecipes: state => {
             return state.recipes
         },
+        getFiltering: state => {
+            return state.filtering
+        }
     },
     mutations: {
         changePage(state, newPage) {
             state.page = newPage
         },
-        changeRecipes(state, newPosts) {
-            state.posts = newPosts
+        changeRecipes(state, newRecipes) {
+            state.recipes = newRecipes
+        },
+        changeFiltering(state, filtering) {
+            state.filtering = filtering
         }
     }
 })
