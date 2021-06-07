@@ -3,8 +3,32 @@ import NotFound from "../views/misc/NotFound";
 import About from "../views/misc/About";
 import Tech from "../views/misc/Tech";
 import Home from "../views/Home";
+import Register from "../views/auth/Register";
+import Login from "../views/auth/Login";
+import Logout from "../views/auth/Logout";
+import ChangePassword from "../views/auth/ChangePassword";
 
 const routes = [
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register,
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+    },
+    {
+        path: '/logout',
+        name: 'Logout',
+        component: Logout,
+    },
+    {
+        path: '/change_password',
+        name: 'ChangePassword',
+        component: ChangePassword,
+    },
     {
         path: '/',
         name: 'Home',
@@ -41,7 +65,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['Home', '404', 'About', 'Tech'];
+    const publicPages = ['Home', '404', 'About', 'Tech', 'Register', 'Login', 'Logout', 'ChangePassword'];
     const authRequired = !publicPages.includes(to.name);
     const loggedIn = localStorage.getItem('user');
     if (!to.name) {

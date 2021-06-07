@@ -1,7 +1,8 @@
 import axios from "axios";
 import authHeader from "../auth-header";
+import {constants} from '../../constants'
 
-const API_URL = 'http://127.0.0.1/api/v1/';
+const API_URL = constants.API_URL;
 
 class TagsUserService {
     async getListTags() {

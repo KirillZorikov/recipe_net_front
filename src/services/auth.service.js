@@ -1,7 +1,8 @@
 import axios from 'axios';
 import authHeader from "../services/auth-header";
+import {constants} from '../constants'
 
-const API_URL = "http://127.0.0.1/api/v1/auth/";
+const API_URL = constants.API_URL + 'auth/';
 
 class AuthService {
     login(user) {
@@ -24,7 +25,7 @@ class AuthService {
     }
 
     register(user) {
-        return axios.post(API_URL + 'signup', user);
+        return axios.post(API_URL + 'register', user);
     }
 
     changePassword(user) {

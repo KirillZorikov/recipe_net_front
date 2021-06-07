@@ -25,15 +25,20 @@
         <RecipeCard/>
         <RecipeCard/>
       </div>
+      <div class="d-flex justify-content-center mb-5">
+        <Paginator/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import RecipeCard from "../components/RecipeCard";
+import Paginator from "../components/Paginator";
+
 export default {
   name: "Home",
-  components: {RecipeCard}
+  components: {Paginator, RecipeCard}
 }
 </script>
 

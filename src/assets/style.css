@@ -1,3 +1,14 @@
+.wrapper {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1340px) {
+    .wrapper {
+        width: 100%;
+    }
+}
+
 .col-card {
     flex: 0 0 auto;
     width: 33.3333333333% !important;
@@ -33,15 +44,15 @@
     width: 80%;
 }
 
+.button-blue {
+    background: #4A61DD;
+    color: #FFFFFF;
+    transition: background 0.2s;
+}
+
 .button-light-blue:hover {
     background: #D8DEFF;
     color: #4A61DD;
-}
-
-
-.wrapper {
-    width: 1200px;
-    margin: 0 auto;
 }
 
 .color-red {
@@ -96,9 +107,37 @@
     font-weight: 300;
 }
 
-@media (max-width: 1340px) {
-    .wrapper {
-        width: 100%;
-    }
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 130%;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50%;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+    color: black;
+    border-radius: 50%;
+}
+
+.form {
+    padding: 57px 100px 64px 68px;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-shadow: 0px 2px 2px rgb(0 0 0 / 25%);
+    border-radius: 16px;
+    max-width: 770px;
+    width: 100%;
+}
+
+.form-wrapper{
+  min-height: 50vh;
 }
 

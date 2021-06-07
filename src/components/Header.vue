@@ -24,13 +24,15 @@
               <a class="nav-link text-dark" href="#">Список покупок</a>
             </li>
           </ul>
-          <template v-if="currentUser">
-              <a class="nav-link text-dark" href="#" tabindex="-1" aria-disabled="true">Войти</a>
-              <a class="nav-link text-dark" href="#" tabindex="-1" aria-disabled="true">Создать аккаунт</a>
+          <template v-if="!currentUser">
+            <router-link :to="{name: 'Login'}" class="nav-link text-dark">Войти</router-link>
+            <router-link :to="{name: 'Register'}">
+              <button class="button button-blue" href="#" tabindex="-1" aria-disabled="true">Создать аккаунт</button>
+            </router-link>
           </template>
           <template v-else>
-              <a class="nav-link text-dark" href="#" tabindex="-1" aria-disabled="true">Изменить пароль</a>
-              <a class="nav-link text-dark" href="#" tabindex="-1" aria-disabled="true">Выход</a>
+            <router-link :to="{name: 'ChangePassword'}" class="nav-link text-dark" >Изменить пароль</router-link>
+            <router-link :to="{name: 'Logout'}" class="nav-link text-dark">Выход</router-link>
           </template>
         </div>
       </div>
@@ -51,12 +53,13 @@ export default {
 </script>
 
 <style scoped>
-.active-link{
+.active-link {
   color: royalblue !important;
   border-bottom: 3px solid royalblue;
   padding-bottom: 5px;
 }
-.li-nav{
+
+.li-nav {
   width: fit-content;
 }
 
