@@ -11,9 +11,8 @@ class RecipeUserService {
             params: params
         });
     }
-    async getListRecipesByUser(username, page) {
-        let params = page ? {page: page} : {};
-        return await axios.get(API_URL + `recipes/${username}`, {
+    async getListRecipesByUser(params, username) {
+        return await axios.get(API_URL + `${username}/recipes`, {
             headers: authHeader(),
             params: params,
         });

@@ -5,8 +5,7 @@ import {constants} from '../../constants'
 const API_URL = constants.API_URL;
 
 class FavoritesUserService {
-    async getListFavoritesRecipes(page) {
-        let params = page ? {page: page} : {};
+    async getListFavoritesRecipes(params) {
         return await axios.get(API_URL + `recipes/favorites`, {
             headers: authHeader(),
             params: params,

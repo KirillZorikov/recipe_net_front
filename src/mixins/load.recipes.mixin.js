@@ -2,12 +2,13 @@ import {RecipeUserService} from "../services/user.services";
 
 export default {
   methods: {
-    loadListRecipes() {
-      if (this.$route.name !== this.$options.name) {
+    loadListRecipes(preferredFunc, param) {
+      if (this.$route.name !== this.$options.name || this.loading) {
         return
       }
+      let func = preferredFunc? preferredFunc: RecipeUserService.getListRecipes;
       this.loading = true;
-      RecipeUserService.getListRecipes(this.makeParams()).then(
+      func(this.makeParams(), param).then(
           response => {
             this.loading = false;
             this.$store.commit('changeRecipes', response.data.response);

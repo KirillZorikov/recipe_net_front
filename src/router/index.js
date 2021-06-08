@@ -8,6 +8,8 @@ import Login from "../views/auth/Login";
 import Logout from "../views/auth/Logout";
 import ChangePassword from "../views/auth/ChangePassword";
 import Recipe from "../views/Recipe";
+import Favorites from "../views/Favorites";
+import Author from "../views/Author";
 
 const routes = [
     {
@@ -43,6 +45,17 @@ const routes = [
         props: true
     },
     {
+        path: '/favorites',
+        name: 'Favorites',
+        component: Favorites
+    },
+    {
+        path: '/recipes/:username',
+        name: 'Author',
+        component: Author,
+        props: true
+    },
+    {
         path: '/about-author',
         name: 'About',
         component: About,
@@ -72,7 +85,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['Home', '404', 'About', 'Tech', 'Register', 'Login', 'Logout', 'ChangePassword', 'Recipe'];
+    const publicPages = ['Home', '404', 'About', 'Tech', 'Register',
+        'Login', 'Logout', 'ChangePassword', 'Recipe', 'Author'];
     const authRequired = !publicPages.includes(to.name);
     const loggedIn = localStorage.getItem('user');
     if (!to.name) {
