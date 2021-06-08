@@ -10,6 +10,8 @@ import ChangePassword from "../views/auth/ChangePassword";
 import Recipe from "../views/Recipe";
 import Favorites from "../views/Favorites";
 import Author from "../views/Author";
+import Follow from "../views/Follow";
+import ShopList from "../views/ShopList";
 
 const routes = [
     {
@@ -54,6 +56,17 @@ const routes = [
         name: 'Author',
         component: Author,
         props: true
+    },
+    {
+        path: '/recipes/follows',
+        name: 'Follow',
+        component: Follow,
+        props: true
+    },
+    {
+        path: '/purchases',
+        name: 'ShopList',
+        component: ShopList
     },
     {
         path: '/about-author',

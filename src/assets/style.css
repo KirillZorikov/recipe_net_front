@@ -29,11 +29,18 @@
 }
 
 
+
+
 .button-light-blue, .button-transparent {
     border: 1px solid #DEE2F2;
     background: #F0F3FF;
     color: #4A61DD;
     width: 80%;
+}
+
+.button-follow {
+    max-width: 100%;
+    width: 100%;
 }
 
 .button-transparent {
@@ -169,6 +176,17 @@
     transform: scale(1.03);
 }
 
+.thumbnail {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+}
+
+.thumbnail-big {
+    width: 90px;
+    height: 90px;
+}
+
 .loading_message {
     position: absolute;
     top: 50%;
@@ -184,6 +202,10 @@
 
     .card-img-top {
         height: 400px;
+    }
+
+    .button-follow {
+        max-width: 250px;
     }
 }
 

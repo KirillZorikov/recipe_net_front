@@ -6,7 +6,7 @@
       </router-link>
       <div class="card-body d-flex justify-content-between flex-column">
         <h5 class="card-title">
-          <router-link :to="{name: 'Recipe', params: {slug: recipe.slug}}" class="text-dark text-decoration-none">
+          <router-link :to="{name: 'Recipe', params: {slug: recipe.slug}}" class="text-dark text-decoration-none fs-4">
             {{ recipe.title }}
           </router-link>
         </h5>

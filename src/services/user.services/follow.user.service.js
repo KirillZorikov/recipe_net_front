@@ -5,8 +5,7 @@ import {constants} from '../../constants'
 const API_URL = constants.API_URL;
 
 class FollowUserService {
-    async getListFollowingRecipes(page) {
-        let params = page ? {page: page} : {};
+    async getListFollowingRecipes(params) {
         return await axios.get(API_URL + `recipes/follows`, {
             headers: authHeader(),
             params: params,

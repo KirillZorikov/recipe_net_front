@@ -5,11 +5,9 @@ import {constants} from '../../constants'
 const API_URL = constants.API_URL;
 
 class PurchasesUserService {
-    async getListPurchasesRecipes(page) {
-        let params = page ? {page: page} : {};
+    async getListPurchasesRecipes() {
         return await axios.get(API_URL + `recipes/purchases`, {
             headers: authHeader(),
-            params: params,
         });
     }
     async getPurchases() {

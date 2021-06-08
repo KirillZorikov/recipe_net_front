@@ -15,7 +15,10 @@
               </router-link>
             </li>
             <li class="nav-item li-nav">
-              <a class="nav-link text-dark" href="#">Мои подписки</a>
+              <router-link :to="{name: 'Follow'}" class="nav-link text-dark"
+                           :class="{'active-link p-0 m-2 mt-1': currentRouteName === 'Follow'}">
+                Мои подписки
+              </router-link>
             </li>
             <li class="nav-item li-nav">
               <a class="nav-link text-dark" href="#">Создать рецепт</a>
@@ -27,7 +30,10 @@
               </router-link>
             </li>
             <li class="nav-item li-nav">
-              <a class="nav-link text-dark" href="#">Список покупок</a>
+              <router-link :to="{name: 'ShopList'}" class="nav-link text-dark"
+                           :class="{'active-link p-0 m-2 mt-1': currentRouteName === 'ShopList'}">
+                Список покупок
+              </router-link>
             </li>
           </ul>
           <template v-if="!currentUser">

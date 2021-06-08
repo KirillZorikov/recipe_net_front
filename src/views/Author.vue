@@ -4,7 +4,9 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-between align-items-center p-3">
-            <h1 v-if="author" class="d-inline">{{ author.name ? author.name : author.username }}</h1>
+            <h1 v-if="author" class="d-inline">
+              {{ author.name ? author.name : author.username }}
+            </h1>
             <FilterTags/>
           </div>
           <template v-if="currentUser && currentUser.username !== author.username">
