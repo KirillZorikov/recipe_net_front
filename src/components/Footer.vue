@@ -1,5 +1,5 @@
 <template>
-  <footer class="mt-auto text-light bg-dark">
+  <footer class="mt-auto text-light bg-dark mt-4">
     <div class="wrapper">
       <div class="d-flex justify-content-between align-items-center">
         <span class="m-3 ms-lg-5">
