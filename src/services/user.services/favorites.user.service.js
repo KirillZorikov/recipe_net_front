@@ -16,7 +16,7 @@ class FavoritesUserService {
         return await axios.get(API_URL + `favorites`, {headers: authHeader()});
     }
     async addToFavorites(recipe_slug) {
-        return await axios.post(API_URL + `favorites`, {author: recipe_slug}, {headers: authHeader()});
+        return await axios.post(API_URL + `favorites`, {recipe: recipe_slug}, {headers: authHeader()});
     }
     async deleteFromFavorites(recipe_slug) {
         return await axios.delete(API_URL + `favorites/${recipe_slug}`, {headers: authHeader()});

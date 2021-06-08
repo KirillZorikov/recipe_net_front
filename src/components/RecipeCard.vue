@@ -10,13 +10,14 @@
         </h5>
         <div class="d-flex justify-content-start align-items-center">
           <template v-for="tag in recipe.tags" :key="tag">
-            <span class="p-3 pt-1 pb-1 me-2" :class="
+            <router-link :to="{name: 'Home', query: {tag: tag.slug}}"
+                         class="p-3 pt-1 pb-1 me-2 text-decoration-none" :class="
             { 'tag-green': tag.slug === 'obed',
               'tag-red': tag.slug === 'zavtrak',
               'tag-purple': tag.slug === 'uzhin'
             }">
               {{ tag.title }}
-            </span>
+            </router-link>
           </template>
         </div>
         <span>
@@ -26,14 +27,16 @@
           </p>
         </span>
         <div class="d-flex justify-content-between align-items-center">
-          <button v-if="in_purchase" type="button" class="button button-transparent d-flex align-items-center">
+          <button v-if="in_purchase" type="button" class="button button-transparent d-flex align-items-center"
+                  @click="actionPurchase('delete')">
             <i class="fas fa-check me-2"></i>Рецепт добавлен
           </button>
-          <button v-else type="button" class="button button-light-blue d-flex align-items-center">
+          <button v-else type="button" class="button button-light-blue d-flex align-items-center"
+                  @click="actionPurchase('add')">
             <i class="fas fa-plus me-2"></i>Добавить в покупки
           </button>
-          <span v-if="in_favorites" class="star">&#9733;</span>
-          <span v-else class="star">&#9734;</span>
+          <span @click="actionFavorites('delete')" v-if="in_favorites" class="star">&#9733;</span>
+          <span @click="actionFavorites('add')" v-else class="star">&#9734;</span>
         </div>
       </div>
     </div>
@@ -41,25 +44,26 @@
   <div v-else>
     <div class="card border-0 mb-3">
       <div class="row g-0">
-        <div class="col-md-5">
+        <div class="col-md-5 ps-1">
           <img :src="recipe.image" class="recipe-img">
         </div>
         <div class="col-md-7 ps-4">
           <div class="card-body pt-0">
             <span class="d-flex justify-content-between">
               <h1 class="card-title d-inline">{{ recipe.title }}</h1>
-              <span v-if="in_favorites" class="star">&#9733;</span>
-              <span v-else class="star">&#9734;</span>
+              <span @click="actionFavorites('delete')" v-if="in_favorites" class="star">&#9733;</span>
+              <span @click="actionFavorites('add')" v-else class="star">&#9734;</span>
             </span>
             <div class="d-flex justify-content-start align-items-center">
               <template v-for="tag in recipe.tags" :key="tag">
-                <span class="p-3 pt-1 pb-1 me-2" :class="
+                <router-link :to="{name: 'Home', query: {tag: tag.slug}}"
+                             class="p-3 pt-1 pb-1 me-2 text-decoration-none" :class="
                 { 'tag-green': tag.slug === 'obed',
                   'tag-red': tag.slug === 'zavtrak',
                   'tag-purple': tag.slug === 'uzhin'
                 }">
                   {{ tag.title }}
-                </span>
+                </router-link>
               </template>
             </div>
             <p class="card-text mb-0 mt-3 font-light"><i class="far fa-clock"></i> {{ recipe.time }} мин.</p>
@@ -70,16 +74,20 @@
               <a class="text-dark font-light" href="#">Редактировать рецепт</a>
             </span>
             <span class="d-flex align-items-start mt-4">
-              <button v-if="in_purchase" type="button" class="button button-blue d-flex align-items-center">
+              <button v-if="in_purchase" type="button" class="button button-blue d-flex align-items-center"
+                      @click="actionPurchase('delete')">
                 <i class="fas fa-check me-2"></i>Рецепт добавлен
               </button>
-              <button v-else type="button" class="button button-blue d-flex align-items-center">
+              <button v-else type="button" class="button button-blue d-flex align-items-center"
+                      @click="actionPurchase('add')">
                 <i class="fas fa-plus me-2"></i>Добавить в покупки
               </button>
-              <button v-if="in_purchase" type="button" class="button button-light-blue d-flex align-items-center ms-2">
+              <button v-if="do_follow" type="button" class="button button-light-blue d-flex align-items-center ms-2"
+                      @click="actionFollow('delete')">
                 <i class="fas fa-pen me-2"></i>Подписаться на автора
               </button>
-              <button v-else type="button" class="button button-light-blue d-flex align-items-center ms-2">
+              <button v-else type="button" class="button button-light-blue d-flex align-items-center ms-2"
+                      @click="actionFollow('add')">
                 <i class="far fa-times-circle me-2"></i>Отписаться от автора
               </button>
             </span>
@@ -97,6 +105,9 @@
 </template>
 
 <script>
+import {FavoritesUserService} from "../services/user.services";
+import {FollowService} from "../services/user.services";
+import {PurchasesUserService} from "../services/user.services";
 
 export default {
   name: "RecipeCard",
@@ -109,6 +120,46 @@ export default {
       in_purchase: this.recipe.in_purchase,
     }
   },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+  },
+  methods: {
+    actionFavorites(action) {
+      if (!this.currentUser) {
+        this.$router.push({name: 'Login'});
+        return
+      }
+      let func = action === 'add' ? FavoritesUserService.addToFavorites : FavoritesUserService.deleteFromFavorites
+      func(this.recipe.slug).then(
+          () => {
+            this.in_favorites = !this.in_favorites
+          })
+    },
+    actionFollow(action) {
+      if (!this.currentUser) {
+        this.$router.push({name: 'Login'});
+        return
+      }
+      let func = action === 'add' ? FollowService.addFollow : FollowService.deleteFollow
+      func(this.recipe.author.username).then(
+          () => {
+            this.do_follow = !this.do_follow
+          })
+    },
+    actionPurchase(action) {
+      if (!this.currentUser) {
+        this.$router.push({name: 'Login'});
+        return
+      }
+      let func = action === 'add' ? PurchasesUserService.addToPurchases : PurchasesUserService.deleteFromPurchases
+      func(this.recipe.slug).then(
+          () => {
+            this.in_purchase = !this.in_purchase
+          })
+    },
+  }
 }
 </script>
 

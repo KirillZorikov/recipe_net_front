@@ -8,7 +8,6 @@ export default {
                 }
             } else {
                 url += '?';
-                console.log(url);
                 for (const tag of value.filtering) {
                     url += `tag=${tag}&`;
                 }
@@ -18,7 +17,6 @@ export default {
                     url += `page=${value.page}`;
                 }
             }
-            // console.log(url);
             this.$router.push(url);
         },
         page() {
@@ -37,9 +35,12 @@ export default {
             if (this.$route.name !== this.$options.name) {
                 return
             }
-            this.$store.commit('changePage', to.page ? parseInt(to.page) : 1);
-            console.log(to.page);
-            console.log(to.filtering);
+            this.$store.commit('changePage', to.page ? parseInt(to.page): 1);
+            if (Array.isArray(to.filtering)) {
+                this.$store.commit('changeFiltering', to.filtering);
+            } else {
+                this.$store.commit('changeFiltering', to.filtering ? [to.filtering]: []);
+            }
         }
     }
 }
