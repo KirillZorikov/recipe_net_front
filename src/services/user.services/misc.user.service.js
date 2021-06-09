@@ -8,6 +8,7 @@ class MiscUserService {
     async getAuthorInfo(username) {
         return await axios.get(API_URL + `users/${username}`, {headers: authHeader()});
     }
+
     async getImage(link) {
         const config = {responseType: 'blob'};
         let fileName = link.split('/').pop();
@@ -15,6 +16,10 @@ class MiscUserService {
             return '';
         }
         return await axios.get(link, config);
+    }
+
+    async getListProducts() {
+        return await axios.get(API_URL + `products`, {headers: authHeader()});
     }
 }
 

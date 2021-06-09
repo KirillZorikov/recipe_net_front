@@ -157,9 +157,9 @@
 .font-light {
     font-family: 'Montserrat', sans-serif;
     font-style: normal;
-    font-weight: lighter;
-    font-size: 15px;
-    line-height: 17px;
+    font-weight: lighter !important;
+    font-size: 15px !important;
+    line-height: 17px !important;
 }
 
 .card-img-top {

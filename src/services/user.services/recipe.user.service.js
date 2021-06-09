@@ -20,13 +20,13 @@ class RecipeUserService {
     async getRecipe(slug) {
         return await axios.get(API_URL + `recipes/${slug}`, {headers: authHeader()});
     }
-    async deletePost(slug) {
+    async deleteRecipe(slug) {
         return await axios.delete(API_URL + `recipes/${slug}`, {headers: authHeader()});
     }
-    async addPost(data) {
+    async addRecipe(data) {
         return await axios.post(API_URL + `recipes`, data, {headers: authHeader()});
     }
-    async updatePost(slug, data) {
+    async updateRecipe(slug, data) {
         return await axios.patch(API_URL + `recipes/${slug}`, data, {headers: authHeader()});
     }
 }

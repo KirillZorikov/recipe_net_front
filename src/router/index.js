@@ -12,6 +12,7 @@ import Favorites from "../views/Favorites";
 import Author from "../views/Author";
 import Follow from "../views/Follow";
 import ShopList from "../views/ShopList";
+import AddUpdateRecipe from "../views/AddUpdateRecipe";
 
 const routes = [
     {
@@ -67,6 +68,11 @@ const routes = [
         path: '/purchases',
         name: 'ShopList',
         component: ShopList
+    },
+    {
+        path: '/recipes/add',
+        name: 'AddRecipe',
+        component: AddUpdateRecipe
     },
     {
         path: '/about-author',
