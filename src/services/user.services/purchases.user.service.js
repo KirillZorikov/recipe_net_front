@@ -20,7 +20,11 @@ class PurchasesUserService {
         return await axios.delete(API_URL + `purchases/${recipe_slug}`, {headers: authHeader()});
     }
     async downloadPurchases() {
-        return await axios.get(API_URL + `purchases/download`, {headers: authHeader()});
+        const config = {
+            responseType: 'blob',
+            headers: authHeader()
+        };
+        return await axios.get(API_URL + `purchases/download`, config);
     }
 }
 

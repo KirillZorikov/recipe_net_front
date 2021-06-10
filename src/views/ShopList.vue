@@ -33,7 +33,9 @@
             </div>
             <hr v-if="recipes.length > 1" class="mt-3 mb-3 text-secondary">
           </template>
-          <button v-if="recipes.length" type="button" class="button button-blue d-flex align-items-center mt-5" style="width: fit-content;">
+          <button v-if="recipes.length" type="button" @click="downloadShopList"
+                  class="button button-blue d-flex align-items-center mt-5"
+                  style="width: fit-content;">
             <p class="m-2">Скачать список</p>
           </button>
         </div>
@@ -94,6 +96,16 @@ export default {
             }
           }
       );
+    },
+    downloadShopList() {
+      PurchasesUserService.downloadPurchases().then((response) => {
+        let fileURL = window.URL.createObjectURL(new Blob([response.data]));
+        let fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', 'shop_list.txt');
+        document.body.appendChild(fileLink);
+        fileLink.click();
+      });
     }
   }
 }
