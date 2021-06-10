@@ -26,7 +26,7 @@ class RecipeUserService {
     async addRecipe(data) {
         return await axios.post(API_URL + `recipes`, data, {headers: authHeader()});
     }
-    async updateRecipe(slug, data) {
+    async updateRecipe(data, slug) {
         return await axios.patch(API_URL + `recipes/${slug}`, data, {headers: authHeader()});
     }
 }

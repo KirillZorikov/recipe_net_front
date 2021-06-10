@@ -1,12 +1,8 @@
 <template>
-  <div class="row w-100 justify-content-center">
-    <div class="col-md-8 p-5">
-      <div class="card">
-        <div class="card-header">Вы вышли из системы</div>
-        <div class="card-body">
-          <p>{{ message }}</p>
-        </div>
-      </div>
+  <div class="wrapper">
+    <h1 class="fw-bold mt-5 mb-5 ms-3">Выход</h1>
+    <div class="text-center mt-5">
+      <p class="fs-3">{{ message }}</p>
     </div>
   </div>
 </template>

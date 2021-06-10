@@ -10,7 +10,10 @@ class MiscUserService {
     }
 
     async getImage(link) {
-        const config = {responseType: 'blob'};
+        const config = {
+            responseType: 'blob',
+            headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json',}
+        };
         let fileName = link.split('/').pop();
         if (!fileName) {
             return '';

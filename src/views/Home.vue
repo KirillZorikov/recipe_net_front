@@ -9,17 +9,29 @@
           </div>
         </div>
       </div>
+
+      <div v-if="message && showMessage" class="row mt-1 mb-1 d-flex justify-content-center">
+        <div class="alert alert-success d-flex align-items-center" style="width: fit-content;" role="alert">
+          {{ message }}
+          <button type="button" class="ml-1 p-0 ms-2 btn bg-transparent shadow-none" @click="deleteMessage"
+                  data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true" class="fs-3">&times;</span>
+          </button>
+        </div>
+      </div>
+
       <Loading v-if="loading" class="loading_message"/>
       <template v-else>
         <div class="row p-3">
           <template v-for="recipe in recipes" :key="recipe">
-            <RecipeCard :recipe="recipe" :show_full="false" @recipe-deleted="loadListRecipes()"/>
+            <RecipeCard :recipe="recipe" :show_full="false" @recipe-deleted="loadData"/>
           </template>
         </div>
-        <div class="d-flex justify-content-center mb-5">
+        <div v-if="recipes.length" class="d-flex justify-content-center mb-5">
           <Paginator :total="totalPages"/>
         </div>
       </template>
+
     </div>
   </div>
 </template>
@@ -41,6 +53,7 @@ export default {
   data() {
     return {
       loading: false,
+      showMessage: true,
       totalPages: 1
     }
   },
@@ -57,6 +70,9 @@ export default {
         page: this.page,
         tags: this.filtering.toString()
       };
+    },
+    deleteMessage() {
+      this.showMessage = false;
     }
   }
 }

@@ -1,5 +1,6 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper mb-5">
+    <h1 class="fw-bold mt-5 mb-5 ms-3">Смена пароля</h1>
     <div class="d-flex justify-content-center align-items-center form-wrapper">
       <form class="form" @submit.prevent="handleChangePassword">
         <div class="mb-3 row">

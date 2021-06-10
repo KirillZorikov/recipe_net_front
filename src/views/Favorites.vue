@@ -7,16 +7,19 @@
             <span><h1 class="d-inline">Избранное</h1> <span v-show="loading" class="spinner-border ms-4"></span></span>
             <FilterTags/>
           </div>
+          <div v-if="!loading && !recipes.length" class="d-flex justify-content-center mt-5">
+            <p class="p-3 fs-3">Ваш список избранного пуст!</p>
+          </div>
         </div>
       </div>
       <Loading v-if="loading" class="loading_message"/>
       <template v-else>
         <div class="row p-3">
           <template v-for="recipe in recipes" :key="recipe">
-            <RecipeCard :recipe="recipe" :show_full="false" @recipe-deleted="loadListRecipes()"/>
+            <RecipeCard :recipe="recipe" :show_full="false" @recipe-deleted="loadData"/>
           </template>
         </div>
-        <div class="d-flex justify-content-center mb-5">
+        <div v-if="recipes.length" class="d-flex justify-content-center mb-5">
           <Paginator :total="totalPages"/>
         </div>
       </template>

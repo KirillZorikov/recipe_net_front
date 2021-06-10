@@ -5,16 +5,18 @@
         <div class="col-12">
           <div class="d-flex p-3">
             <span><h1 class="d-inline">Список покупок:</h1> <span v-show="loading"
-                                                                 class="spinner-border ms-4"></span></span>
+                                                                  class="spinner-border ms-4"></span></span>
+          </div>
+          <div v-if="!loading && !recipes.length" class="d-flex justify-content-center mt-5">
+            <p class="p-3 fs-3">Ваш список покупок пуст!</p>
           </div>
         </div>
       </div>
       <Loading v-if="loading" class="loading_message"/>
       <template v-else>
         <div class="row p-3 mt-4 ps-1 mb-5">
-          <template v-if="recipes.length">
-            <template v-for="recipe in recipes" :key="recipe">
-              <div class="d-flex justify-content-between align-items-center">
+          <template v-for="recipe in recipes" :key="recipe">
+            <div class="d-flex justify-content-between align-items-center">
               <span class="d-flex justify-content-between flex-row">
                 <img :src="recipe.image" class="thumbnail thumbnail-big me-3">
                 <span class="ms-5">
@@ -25,19 +27,15 @@
                   <p class="mb-1 mt-2 fs-6"><i class="far fa-clock mt-3"></i> {{ recipe.time }} мин.</p>
                 </span>
               </span>
-                <button @click="deleteFromPurchases(recipe.slug)" class="text-dark btn bg-transparent shadow-none">
-                  Удалить
-                </button>
-              </div>
-              <hr v-if="recipes.length > 1" class="mt-3 mb-3 text-secondary">
-            </template>
-            <button type="button" class="button button-blue d-flex align-items-center mt-5" style="width: fit-content;">
-              <p class="m-2">Скачать список</p>
-            </button>
+              <button @click="deleteFromPurchases(recipe.slug)" class="text-dark btn bg-transparent shadow-none">
+                Удалить
+              </button>
+            </div>
+            <hr v-if="recipes.length > 1" class="mt-3 mb-3 text-secondary">
           </template>
-          <template v-else>
-            <p class="fs-4 ps-4 pt-4">Ваш список покупок пуст!</p>
-          </template>
+          <button v-if="recipes.length" type="button" class="button button-blue d-flex align-items-center mt-5" style="width: fit-content;">
+            <p class="m-2">Скачать список</p>
+          </button>
         </div>
       </template>
     </div>

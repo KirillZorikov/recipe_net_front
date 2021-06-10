@@ -1,39 +1,69 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper mb-5">
+    <h1 class="fw-bold mt-5 mb-5 ms-3">Вход</h1>
+
+    <div v-if="showMessage" class="row mt-1 mb-1 d-flex justify-content-center w-100">
+      <div class="alert alert-danger d-flex align-items-center" style="width: fit-content;" role="alert">
+          <span class="mt-1">
+            <span class="d-block">Введены невалидные данные.</span>
+            <span class="d-block">Попробуйте ещё раз.</span>
+          </span>
+        <button type="button" class="ml-1 p-0 ms-2 btn bg-transparent shadow-none h-100 d-flex align-items-start"
+                @click="deleteMessage"
+                data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true" class="fs-3" style="margin-top: -10px">&times;</span>
+        </button>
+      </div>
+    </div>
+
     <div class="d-flex justify-content-center align-items-center form-wrapper">
-      <form class="form" @submit.prevent="handleLogin">
+      <form class="form needs-validation" @submit.prevent="handleLogin">
+
         <div class="mb-3 row">
-          <label for="inputUsername" class="col-sm-3 col-form-label">Имя пользователя / Email</label>
-          <div class="col-sm-9 ps-3">
+          <label for="inputUsername" class="col-5 col-form-label p-0 fs-5">Имя пользователя/ Email</label>
+          <div class="col-7 ps-3 pe-0 d-flex flex-row">
+            <div class="input-group-prepend">
+              <span class="input-group-text rounded-0 rounded-start h-100">
+                  <i class="fa fa-id-badge fa-fw fs-5"></i>
+              </span>
+            </div>
             <input
-                required
                 v-model="user.username"
                 type="text"
-                class="form-control"
-                name="username"
+                class="form-control rounded-0 rounded-end"
                 id="inputUsername"
+                required
+                :class="{'is-invalid': showMessage}"
             >
           </div>
         </div>
+
         <div class="mb-3 row">
-          <label for="inputPassword" class="col-sm-3 col-form-label">Пароль</label>
-          <div class="col-sm-9 ps-3">
+          <label for="inputPassword" class="col-5 col-form-label p-0 fs-5">Пароль</label>
+          <div class="col-7 ps-3 pe-0 d-flex flex-row">
+            <div class="input-group-prepend">
+              <span class="input-group-text rounded-0 rounded-start h-100">
+                  <i class="fa fa-lock fa-fw fs-5"></i>
+              </span>
+            </div>
             <input
-                required
                 v-model="user.password"
                 type="password"
-                class="form-control"
-                name="password"
+                class="form-control rounded-0 rounded-end"
                 id="inputPassword"
+                required
+                :class="{'is-invalid': showMessage}"
             >
           </div>
         </div>
+
         <div class="d-flex justify-content-center mt-4">
           <button type="submit" class="button button-blue" :disabled="loading">
             <span v-show="loading" class="spinner-border spinner-border-sm me-1"></span>
             <span>Войти</span>
           </button>
         </div>
+
       </form>
     </div>
   </div>
@@ -48,7 +78,7 @@ export default {
     return {
       user: new User(),
       loading: false,
-      message: ''
+      showMessage: false,
     };
   },
   computed: {
@@ -66,13 +96,15 @@ export default {
             },
             error => {
               this.loading = false;
-              this.message =
-                  (error.response && error.response.data) ||
-                  error.message ||
-                  error.toString();
+              if (error.response.status === 400) {
+                this.showMessage = true;
+              }
             }
         );
       }
+    },
+    deleteMessage() {
+      this.showMessage = false;
     }
   }
 }

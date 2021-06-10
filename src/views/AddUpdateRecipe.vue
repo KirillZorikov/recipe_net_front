@@ -1,11 +1,34 @@
 <template>
   <div class="wrapper">
-    <h1 class="fw-bold mt-5 mb-5 ms-3">Создание рецепта</h1>
-    <div class="d-flex justify-content-center align-items-center form-wrapper">
+    <h1 v-if="isUpdate" class="fw-bold mt-5 mb-5 ms-3">Редактирование рецепта</h1>
+    <h1 v-else class="fw-bold mt-5 mb-5 ms-3">Создание рецепта</h1>
 
-      <form class="form" enctype="multipart/form-data" @submit.prevent="addRecipe">
+    <div v-if="showMessage" class="row mt-1 mb-1 d-flex justify-content-center w-100">
+      <div class="alert alert-danger d-flex align-items-center" style="width: fit-content;" role="alert">
+          <span class="mt-1">
+            <template v-if="message.tags || message.ingredients || message.image">
+              <span class="d-block" v-if="message.tags">{{ message.tags.join() }}</span>
+              <span class="d-block" v-if="message.ingredients">{{ message.ingredients.join() }}</span>
+              <span class="d-block" v-if="message.image">{{ message.image.join() }}</span>
+            </template>
+            <template v-else>
+              <span class="d-block">Введены невалидные данные.</span>
+              <span class="d-block">Попробуйте ещё раз.</span>
+            </template>
+          </span>
+        <button type="button" class="ml-1 p-0 ms-2 btn bg-transparent shadow-none h-100 d-flex align-items-start"
+                @click="deleteMessage"
+                data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true" class="fs-3" style="margin-top: -10px">&times;</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center form-wrapper mb-5">
+      <form class="form" enctype="multipart/form-data" @submit.prevent="addUpdateRecipe">
         <div v-if="loadingData" class="w-100 text-center fs-4">Загрузка... <span class="spinner-border"></span></div>
         <template v-else>
+
           <div class="mb-5 row">
             <label for="inputTitle" class="col-4 col-form-label p-0 fs-5">Название рецепта</label>
             <div class="col-8 ps-3 pe-0">
@@ -16,6 +39,7 @@
                   class="form-control p-2"
                   name="title"
                   id="inputTitle"
+                  :class="{'is-invalid': message.title}"
               >
             </div>
           </div>
@@ -54,7 +78,7 @@
                           :options="options.products"
                           searchable
                           close-on-select
-                          placeholder="Выбирите ингредиенты:"
+                          placeholder="Выберите ингредиенты:"
                           :search-placeholder="selectedIngredient.title ? selectedIngredient.title: 'Поиск'"
               />
               <button type="button" class="text-dark btn bg-transparent shadow-none ps-0 mb-2"
@@ -64,7 +88,7 @@
               </button>
               <div v-for="ingredient in form.ingredients" :key="ingredient" style="font-size: .8rem;"
                    class="d-flex justify-content-between">
-                <p class="mb-0">{{ ingredient.title }} - {{ ingredient.quantity }} {{ ingredient.unit }}.</p>
+                <p class="mb-0">{{ ingredient.title }} - {{ ingredient.quantity }} {{ ingredient.unit }}</p>
                 <button type="button" class="text-dark btn bg-transparent shadow-none p-0 m-0"
                         style="margin: -4px !important;"
                         @click.stop="deleteIngredient(ingredient)">
@@ -73,11 +97,11 @@
               </div>
             </div>
             <div class="col-2 ps-3 pe-0">
-              <input type="number" min="0" v-model="selectedIngredient.quantity"
+              <input type="number" min="0" max="32767" v-model="selectedIngredient.quantity"
                      class="form-control p-2" style="max-width: 70px;">
             </div>
             <div class="col-1 pe-0 d-flex ps-0 align-items-end" style="max-height: 45px">
-              <span v-if="selectedIngredient.unit">{{ selectedIngredient.unit }}.</span>
+              <span v-if="selectedIngredient.unit">{{ selectedIngredient.unit }}</span>
             </div>
           </div>
 
@@ -87,10 +111,13 @@
               <input
                   required
                   v-model="form.time"
-                  type="text"
+                  type="number"
+                  min="0"
+                  max="32767"
                   class="form-control p-2"
                   name="time"
                   id="inputTime"
+                  :class="{'is-invalid': message.time}"
               >
             </div>
             <div class="col-3 ps-3 pe-0 mt-1 d-flex align-items-end">
@@ -108,7 +135,9 @@
                   type="text"
                   class="form-control p-2"
                   name="description"
-                  id="inputDescription">
+                  id="inputDescription"
+                  :class="{'is-invalid': message.description}"
+              >
               </textarea>
             </div>
           </div>
@@ -119,15 +148,23 @@
             <div class="col-8 ps-3 pe-0 mt-1">
               <input class="form-control" type="file" id="inputImage"
                      accept="image/*" ref="file" v-on:change="handleFileUpload()">
+              <template v-if="imageBase64">
+                <div class="mt-3 me-3 d-flex justify-content-end">
+                  <img :src="imageBase64" style="max-width: 100px">
+                </div>
+              </template>
             </div>
           </div>
+
 
           <div class="d-flex justify-content-center mt-4">
             <button type="submit" class="button button-blue" :disabled="loadingSubmit">
               <span v-show="loadingSubmit" class="spinner-border spinner-border-sm me-1"></span>
-              <span>Создать рецепт</span>
+              <span v-if="isUpdate">Изменить рецепт</span>
+              <span v-else>Создать рецепт</span>
             </button>
           </div>
+
         </template>
       </form>
     </div>
@@ -135,19 +172,21 @@
 </template>
 
 <script>
-import {MiscService} from "../services/user.services";
 import VueNextSelect from 'vue-next-select';
-import {RecipeUserService} from "../services/user.services";
+import {RecipeUserService, MiscService} from "../services/user.services";
 
 export default {
   name: "AddUpdateRecipe",
   components: {
     'vue-select': VueNextSelect,
   },
+  props: ['slug'],
   data() {
     return {
       message: '',
+      showMessage: false,
       productsByUnit: {},
+      imageBase64: '',
       loadingSubmit: false,
       loadingData: false,
       selectedIngredient: {
@@ -181,7 +220,16 @@ export default {
     },
     selectedProductName() {
       return this.selectedIngredient.title;
-    }
+    },
+    formImage() {
+      return this.form.image;
+    },
+    isUpdate() {
+      return !!this.slug
+    },
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
   },
   created() {
     this.loadData();
@@ -190,6 +238,9 @@ export default {
     loadData() {
       this.loadingData = true;
       this.loadListIngredients();
+      if (this.isUpdate) {
+        this.loadRecipe();
+      }
     },
     loadListIngredients() {
       MiscService.getListProducts().then(
@@ -205,7 +256,32 @@ export default {
           }
       )
     },
-    handleFileUpload() {
+    loadRecipe() {
+      RecipeUserService.getRecipe(this.slug).then(
+          response => {
+            this.checkAuthorRecipe(response.data);
+            this.form.title = response.data.title;
+            this.form.description = response.data.description;
+            this.form.ingredients = response.data.ingredients;
+            this.form.time = response.data.time;
+            this.form.tags = response.data.tags.map(x => {
+              return x.slug
+            });
+            if (response.data.image) {
+              let imageName = response.data.image.split('/').pop();
+              MiscService.getImage(response.data.image).then(response => {
+                this.form.image = new File([response.data], imageName);
+              })
+            }
+          }
+      )
+    },
+    checkAuthorRecipe(recipe) {
+      if (this.currentUser.username !== recipe.author.username) {
+        this.$router.push({name: '404', params: {'from_url': window.location.href}});
+      }
+    },
+    async handleFileUpload() {
       this.form.image = this.$refs.file.files[0];
     },
     changeTag(tagSlug) {
@@ -241,17 +317,57 @@ export default {
       data.append('image', this.form.image);
       return data;
     },
-    addRecipe() {
+    addUpdateRecipe() {
+      if (!this.simpleValidate()) {
+        return
+      }
+      this.loadingSubmit = true;
       let form = this.properForm();
-      console.log(form);
-      RecipeUserService.addRecipe(form).then(
+      let func = this.isUpdate ? RecipeUserService.updateRecipe : RecipeUserService.addRecipe
+      func(form, this.slug).then(
           () => {
-            this.$router.push({name: 'Home', params: {message: 'Пост успешно добавлен.'}});
+            this.loadingSubmit = false;
+            this.$router.push({
+              name: 'Home', params: {
+                message: this.isUpdate ? 'Рецепт успешно обновлён.' : 'Рецепт успешно добавлен.'
+              }
+            });
           },
           error => {
-            this.message = error;
+            if (error.response.status === 400) {
+              this.showMessage = true;
+              this.message = error.response.data
+            }
           }
       );
+    },
+    simpleValidate() {
+      let valid = true
+      if (!this.form.ingredients.length) {
+        this.message = {'ingredients': ['Введите ингредиенты!']}
+        this.showMessage = true;
+        valid = false;
+      }
+      if (!this.form.tags.length) {
+        this.message = {'tags': ['Выберите теги!']}
+        this.showMessage = true;
+        valid = false;
+      }
+      if (!this.form.image) {
+        this.message = {'image': ['Выберите картинку!']}
+        this.showMessage = true;
+        valid = false;
+      }
+      if (!valid) {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+      }
+      return valid
+    },
+    deleteMessage() {
+      this.showMessage = false;
     }
   },
   watch: {
@@ -260,6 +376,16 @@ export default {
         this.selectedIngredient.unit = this.productsByUnit[value];
         this.selectedIngredient.quantity = 0;
       }
+    },
+    async formImage(value) {
+      const fileToBase64 = async (file) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = () => resolve(reader.result)
+            reader.onerror = (e) => reject(e)
+          })
+      this.imageBase64 = await fileToBase64(value)
     }
   }
 }

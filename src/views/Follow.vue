@@ -6,6 +6,9 @@
           <div class="d-flex p-3">
             <span><h1 class="d-inline">Мои подписки</h1> <span v-show="loading" class="spinner-border ms-4"></span></span>
           </div>
+          <div v-if="!loading && !follows.length" class="d-flex justify-content-center mt-5">
+            <p class="p-3 fs-3">У вас ещё нет подписок!</p>
+          </div>
         </div>
       </div>
       <Loading v-if="loading" class="loading_message"/>
@@ -15,7 +18,7 @@
             <FollowCard :follow="follow" @follow-deleted="loadListFollow()"/>
           </template>
         </div>
-        <div class="d-flex justify-content-center mb-5">
+        <div v-if="follows.length" class="d-flex justify-content-center mb-5">
           <Paginator :total="totalPages"/>
         </div>
       </template>

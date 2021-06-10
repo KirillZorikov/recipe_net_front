@@ -1,11 +1,16 @@
 <template v-if="recipe">
   <div v-if="!show_full" class="col-card ps-3 pe-3 pb-3">
     <div class="card h-100">
-      <router-link :to="{name: 'Recipe', params: {slug: recipe.slug}}">
-        <img :src="recipe.image" class="card-img-top rounded-3">
-      </router-link>
+
+      <div class="position-relative" style="height: fit-content;">
+        <router-link :to="{name: 'Recipe', params: {slug: recipe.slug}}">
+          <img :src="recipe.image" class="card-img-top rounded-3 d-block">
+        </router-link>
+        <ImageButtons v-if="currentUser" :recipe="recipe" @recipe-deleted="recipeDeleted"/>
+      </div>
+
       <div class="card-body d-flex justify-content-between flex-column">
-        <h5 class="card-title">
+        <h5 class="mb-3">
           <router-link :to="{name: 'Recipe', params: {slug: recipe.slug}}" class="text-dark text-decoration-none fs-4">
             {{ recipe.title }}
           </router-link>
@@ -22,10 +27,10 @@
             </router-link>
           </template>
         </div>
-        <span>
-          <p class="card-text text-secondary mb-0 mt-2"><i class="far fa-clock"></i> {{ recipe.time }} мин.</p>
+        <span class="font-light mb-3">
+          <p class="card-text mb-0 mt-3 mb-1"><i class="far fa-clock"></i> {{ recipe.time }} мин.</p>
           <router-link :to="{name: 'Author', params: {username: recipe.author.username}}"
-                       class="card-text text-secondary mb-2 text-decoration-none"><i class="far fa-user"></i>
+                       class="card-text text-dark"><i class="far fa-user"></i>
             {{ recipe.author.name ? recipe.author.name : recipe.author.username }}
           </router-link>
         </span>
@@ -72,10 +77,14 @@
             <p class="card-text mb-0 mt-3 font-light"><i class="far fa-clock"></i> {{ recipe.time }} мин.</p>
             <span>
               <router-link :to="{name: 'Author', params: {username: recipe.author.username}}"
-                           class="card-text mb-2 d-inline me-3 font-light text-dark"><i class="far fa-user"></i>
+                           class="card-text mb-2 d-inline me-5 font-light text-dark"><i class="far fa-user"></i>
                 {{ recipe.author.name ? recipe.author.name : recipe.author.username }}
               </router-link>
-              <a class="text-dark font-light" href="#">Редактировать рецепт</a>
+              <router-link v-if="currentUser.username === recipe.author.username"
+                           :to="{name: 'UpdateRecipe', params: {slug: recipe.slug, username: recipe.author.username}}"
+                           class="text-dark font-light">
+                <i class="fas fa-pencil-alt me-1"></i>Редактировать рецепт
+              </router-link>
             </span>
             <span class="d-flex align-items-start mt-4">
               <button v-if="in_purchase" type="button" class="button button-blue d-flex align-items-center"
@@ -114,9 +123,11 @@
 import {FavoritesUserService} from "../services/user.services";
 import {FollowService} from "../services/user.services";
 import {PurchasesUserService} from "../services/user.services";
+import ImageButtons from "./ImageButtons";
 
 export default {
   name: "RecipeCard",
+  components: {ImageButtons},
   emits: ['recipe-deleted'],
   props: ['recipe', 'show_full'],
   data() {
@@ -165,6 +176,9 @@ export default {
             this.in_purchase = !this.in_purchase
           })
     },
+    recipeDeleted() {
+      this.$emit('recipe-deleted');
+    }
   }
 }
 </script>

@@ -25,7 +25,7 @@
       <template v-else>
         <div class="row p-3">
           <template v-for="recipe in recipes" :key="recipe">
-            <RecipeCard :recipe="recipe" :show_full="false" @recipe-deleted="loadListRecipes()"/>
+            <RecipeCard :recipe="recipe" :show_full="false" @recipe-deleted="loadData"/>
           </template>
         </div>
         <div class="d-flex justify-content-center mb-5">

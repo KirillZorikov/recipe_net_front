@@ -75,6 +75,12 @@ const routes = [
         component: AddUpdateRecipe
     },
     {
+        path: '/recipes/update/:slug',
+        name: 'UpdateRecipe',
+        component: AddUpdateRecipe,
+        props: true
+    },
+    {
         path: '/about-author',
         name: 'About',
         component: About,

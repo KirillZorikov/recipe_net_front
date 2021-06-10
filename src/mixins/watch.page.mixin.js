@@ -20,7 +20,7 @@ export default {
             this.$router.push(url);
         },
         page() {
-            this.loadData()
+            this.loadData();
         },
         filtering() {
             this.loadData();
