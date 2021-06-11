@@ -13,6 +13,8 @@ import Author from "../views/Author";
 import Follow from "../views/Follow";
 import ShopList from "../views/ShopList";
 import AddUpdateRecipe from "../views/AddUpdateRecipe";
+import ResetPassword from "../views/auth/ResetPassword";
+import ResetPasswordComplete from "../views/auth/ResetPasswordComplete";
 
 const routes = [
     {
@@ -81,6 +83,16 @@ const routes = [
         props: true
     },
     {
+        path: '/reset_password',
+        name: 'ResetPassword',
+        component: ResetPassword
+    },
+    {
+        path: '/reset_password_complete',
+        name: 'ResetPasswordComplete',
+        component: ResetPasswordComplete
+    },
+    {
         path: '/about-author',
         name: 'About',
         component: About,
@@ -110,8 +122,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['Home', '404', 'About', 'Tech', 'Register',
-        'Login', 'Logout', 'ChangePassword', 'Recipe', 'Author'];
+    const publicPages = ['Home', '404', 'About', 'Tech', 'Register', 'ResetPasswordComplete',
+        'Login', 'Logout', 'ChangePassword', 'Recipe', 'Author', 'ResetPassword'];
     const authRequired = !publicPages.includes(to.name);
     const loggedIn = localStorage.getItem('user');
     if (!to.name) {

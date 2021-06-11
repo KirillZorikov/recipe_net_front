@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main mt-5">
     <p>Сайт сделан с помощью:</p>
     <ul>
       <li>Django 3.2</li>
@@ -11,7 +11,8 @@
 
 <script>
 export default {
-  name: "Tech"
+  name: "Tech",
+  title: 'Технологии',
 }
 </script>
 

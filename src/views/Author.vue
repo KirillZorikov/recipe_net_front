@@ -45,6 +45,9 @@ import {RecipeUserService, MiscService, FollowService} from "../services/user.se
 
 export default {
   name: 'Author',
+  title () {
+    return `Рецепты пользователя: ${this.username}`
+  },
   mixins: [loadRecipesMixin, initUrlParamsMixin, watchPageMixin, computedPageMixin],
   components: {Loading, FilterTags, RecipeCard, Paginator},
   props: ['username'],

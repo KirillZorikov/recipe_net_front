@@ -7,6 +7,7 @@
       <div class="alert alert-danger d-flex align-items-center" style="width: fit-content;" role="alert">
           <span class="mt-1">
             <template v-if="message.tags || message.ingredients || message.image">
+              <span class="d-block" v-if="message.description">{{ message.description.join() }}</span>
               <span class="d-block" v-if="message.tags">{{ message.tags.join() }}</span>
               <span class="d-block" v-if="message.ingredients">{{ message.ingredients.join() }}</span>
               <span class="d-block" v-if="message.image">{{ message.image.join() }}</span>
@@ -128,18 +129,14 @@
           <div class="mb-5 row">
             <label for="inputDescription" class="col-4 col-form-label p-0 fs-5 pe-3">Описание</label>
             <div class="col-8 ps-3 pe-0 mt-1">
-              <textarea
-                  required
-                  rows="8"
-                  v-model="form.description"
-                  type="text"
-                  class="form-control p-2"
-                  name="description"
-                  id="inputDescription"
-                  :class="{'is-invalid': message.description}"
+              <ckeditor :editor="editor"
+                        v-model="form.description"
+                        :config="editorConfig"
+                        id="inputDescription"
               >
-              </textarea>
+              </ckeditor>
             </div>
+
           </div>
 
 
@@ -172,17 +169,35 @@
 </template>
 
 <script>
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 import VueNextSelect from 'vue-next-select';
 import {RecipeUserService, MiscService} from "../services/user.services";
+import {constants} from "../constants";
 
 export default {
   name: "AddUpdateRecipe",
+  title () {
+    return this.$route.name === 'AddRecipe'? 'Создание рецепта': 'Редактирование рецепта'
+  },
   components: {
     'vue-select': VueNextSelect,
+    ckeditor: CKEditor.component
   },
   props: ['slug'],
   data() {
     return {
+      editor: ClassicEditor,
+      editorConfig: {
+        toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+        heading: {
+          options: [
+            {model: 'paragraph', title: 'Параграф', class: 'ck-heading_paragraph'},
+            {model: 'heading3', view: 'h3', title: 'Заголовок 3', class: 'ck-heading_heading3'},
+            {model: 'heading4', view: 'h4', title: 'Заголовок 4', class: 'ck-heading_heading4'}
+          ]
+        }
+      },
       message: '',
       showMessage: false,
       productsByUnit: {},
@@ -269,7 +284,7 @@ export default {
             });
             if (response.data.image) {
               let imageName = response.data.image.split('/').pop();
-              MiscService.getImage(response.data.image).then(response => {
+              MiscService.getImage(this.changePath(response.data.image)).then(response => {
                 this.form.image = new File([response.data], imageName);
               })
             }
@@ -277,7 +292,7 @@ export default {
       )
     },
     checkAuthorRecipe(recipe) {
-      if (this.currentUser.username !== recipe.author.username) {
+      if (this.currentUser.username !== recipe.author.username && !this.currentUser.is_staff) {
         this.$router.push({name: '404', params: {'from_url': window.location.href}});
       }
     },
@@ -335,6 +350,7 @@ export default {
           },
           error => {
             if (error.response.status === 400) {
+              this.loadingSubmit = false;
               this.showMessage = true;
               this.message = error.response.data
             }
@@ -343,6 +359,11 @@ export default {
     },
     simpleValidate() {
       let valid = true
+      if (this.form.description.length > 50000) {
+        this.message = {'description': ['Описание не должно превышать 50 000 символов!']}
+        this.showMessage = true;
+        valid = false;
+      }
       if (!this.form.ingredients.length) {
         this.message = {'ingredients': ['Введите ингредиенты!']}
         this.showMessage = true;
@@ -368,6 +389,10 @@ export default {
     },
     deleteMessage() {
       this.showMessage = false;
+    },
+    changePath(url) {
+      let search = 'media/'
+      return constants.MEDIA_DIR_URL + url.slice(url.indexOf(search) + search.length);
     }
   },
   watch: {

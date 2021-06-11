@@ -22,8 +22,7 @@
   </div>
   <!-- Modal -->
 
-  <router-link v-if="currentUser.username === recipe.author.username"
-               :to="{name: 'UpdateRecipe', params: {slug: recipe.slug}}">
+  <router-link :to="{name: 'UpdateRecipe', params: {slug: recipe.slug}}">
     <i class="fas fa-pencil-alt icon-image icon-image-blue" style="top: 40px;"></i>
   </router-link>
 </template>

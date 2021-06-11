@@ -36,6 +36,7 @@ import {FavoritesUserService} from "../services/user.services";
 
 export default {
   name: 'Favorites',
+  title: 'Избранные рецепты',
   mixins: [loadRecipesMixin, initUrlParamsMixin, watchPageMixin, computedPageMixin],
   components: {Loading, FilterTags, RecipeCard, Paginator},
   data() {

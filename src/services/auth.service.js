@@ -40,12 +40,12 @@ class AuthService {
         return axios.post(API_URL + 'reset_password', {email: email})
     }
 
-    resetPasswordComplete(uidb64, token, user) {
+    resetPasswordComplete(uidb64, token, password, password2) {
         let params = {'uidb64': uidb64, 'token': token};
         return axios.post(API_URL + 'reset_password_complete',
             {
-                password2: user.password2,
-                password: user.password
+                password2: password2,
+                password: password
             },
             {params: params})
     }

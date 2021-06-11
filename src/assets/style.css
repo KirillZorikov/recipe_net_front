@@ -212,6 +212,18 @@
     font-size: x-large;
 }
 
+.django-ckeditor-widget, .ck.ck-editor {
+    width: 100% !important;
+}
+
+.ck-editor__editable {
+  min-height: 300px !important;
+}
+
+.card-text p {
+    display: inline;
+}
+
 @media (max-width: 1095px) {
     .col-card {
         width: 100% !important;

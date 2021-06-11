@@ -1,10 +1,4 @@
 <template>
-<!--  <div class="fs-1">-->
-<!--    <i v-if="!checkout" @click="changeColor" class="far fa-circle"></i>-->
-<!--    <i v-else @click="changeColor" class="fas fa-check-circle text-primary"></i>-->
-<!--    <i class="far fa-clock"></i>-->
-<!--    <i class="far fa-user"></i>-->
-<!--  </div>-->
   <Header/>
   <router-view/>
   <Footer/>

@@ -34,6 +34,7 @@ import FollowCard from "../components/FollowCard";
 
 export default {
   name: 'Follow',
+  title: 'Подписки',
   mixins: [initUrlParamsMixin, watchPageMixin, computedPageMixin],
   components: {FollowCard, Loading, Paginator},
   data() {

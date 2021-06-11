@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main mt-5">
     <p>Автора зовут Кирилл.</p>
     <p>Почта: <a href = "mailto: k.zorikov@yandex.ru">k.zorikov@yandex.ru</a></p>
     <p>Гитхаб: <a href="https://github.com/KirillZorikov">github.com/KirillZorikov</a></p>
@@ -8,7 +8,8 @@
 
 <script>
 export default {
-  name: "About"
+  name: "About",
+  title: 'Об авторе',
 }
 </script>
 

@@ -18,7 +18,7 @@
           <template v-for="recipe in recipes" :key="recipe">
             <div class="d-flex justify-content-between align-items-center">
               <span class="d-flex justify-content-between flex-row">
-                <img :src="recipe.image" class="thumbnail thumbnail-big me-3">
+                <img :src="changePath(recipe.image)" class="thumbnail thumbnail-big me-3">
                 <span class="ms-5">
                   <router-link :to="{name: 'Recipe', params: {slug: recipe.slug}}"
                                class="text-dark text-decoration-none fs-5">
@@ -46,9 +46,11 @@
 <script>
 import Loading from "../components/Loading";
 import {PurchasesUserService} from "../services/user.services";
+import {constants} from "../constants";
 
 export default {
   name: 'ShopList',
+  title: 'Список покупок',
   components: {Loading},
   data() {
     return {
@@ -106,6 +108,10 @@ export default {
         document.body.appendChild(fileLink);
         fileLink.click();
       });
+    },
+    changePath(url) {
+      let search = 'media/'
+      return constants.MEDIA_DIR_URL + url.slice(url.indexOf(search) + search.length);
     }
   }
 }

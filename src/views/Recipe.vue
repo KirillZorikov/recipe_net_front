@@ -11,6 +11,7 @@ import RecipeCard from "../components/RecipeCard";
 import Loading from "../components/Loading";
 export default {
   name: "Recipe",
+  title: 'Рецепт',
   components: {Loading, RecipeCard},
   props: ['slug'],
   data() {

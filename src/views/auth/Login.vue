@@ -57,11 +57,13 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-center mt-4">
+        <div class="d-flex justify-content-center mt-4 align-items-end">
+          <div class="w-25"></div>
           <button type="submit" class="button button-blue" :disabled="loading">
             <span v-show="loading" class="spinner-border spinner-border-sm me-1"></span>
             <span>Войти</span>
           </button>
+          <router-link :to="{name: 'ResetPassword'}" class="w-25 ps-2">Забыли пароль?</router-link>
         </div>
 
       </form>
@@ -74,6 +76,7 @@ import User from '../../models/user';
 
 export default {
   name: "Login",
+  title: 'Вход',
   data() {
     return {
       user: new User(),

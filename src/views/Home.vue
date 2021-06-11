@@ -45,6 +45,7 @@ import Loading from "../components/Loading";
 
 export default {
   name: 'Home',
+  title: 'Главная страница',
   mixins: [loadRecipesMixin, initUrlParamsMixin, watchPageMixin, computedPageMixin],
   components: {Loading, FilterTags, RecipeCard, Paginator},
   props: [

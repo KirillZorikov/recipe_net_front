@@ -4,9 +4,12 @@
 
       <div class="position-relative" style="height: fit-content;">
         <router-link :to="{name: 'Recipe', params: {slug: recipe.slug}}">
-          <img :src="recipe.image" class="card-img-top rounded-3 d-block">
+          <img :src="changePath(recipe.image)" class="card-img-top rounded-3 d-block">
         </router-link>
-        <ImageButtons v-if="currentUser" :recipe="recipe" @recipe-deleted="recipeDeleted"/>
+        <ImageButtons
+            v-if="currentUser.username === recipe.author.username || currentUser.is_staff"
+            :recipe="recipe" @recipe-deleted="recipeDeleted"
+        />
       </div>
 
       <div class="card-body d-flex justify-content-between flex-column">
@@ -53,7 +56,7 @@
     <div class="card border-0 mb-3">
       <div class="row g-0">
         <div class="col-md-5 ps-1">
-          <img :src="recipe.image" class="recipe-img">
+          <img :src="changePath(recipe.image)" class="recipe-img">
         </div>
         <div class="col-md-7 ps-4">
           <div class="card-body pt-0">
@@ -80,7 +83,7 @@
                            class="card-text mb-2 d-inline me-5 font-light text-dark"><i class="far fa-user"></i>
                 {{ recipe.author.name ? recipe.author.name : recipe.author.username }}
               </router-link>
-              <router-link v-if="currentUser.username === recipe.author.username"
+              <router-link v-if="currentUser.username === recipe.author.username || currentUser.is_staff"
                            :to="{name: 'UpdateRecipe', params: {slug: recipe.slug, username: recipe.author.username}}"
                            class="text-dark font-light">
                 <i class="fas fa-pencil-alt me-1"></i>Редактировать рецепт
@@ -111,7 +114,7 @@
               <p class="mb-0">{{ ingredient.title }} - {{ ingredient.quantity }} {{ ingredient.unit }}.</p>
             </template>
             <h3 class="mt-5 mb-3">Описание:</h3>
-            <p class="card-text">{{ recipe.description }}</p>
+            <span v-html="recipe.description"></span>
           </div>
         </div>
       </div>
@@ -124,6 +127,7 @@ import {FavoritesUserService} from "../services/user.services";
 import {FollowService} from "../services/user.services";
 import {PurchasesUserService} from "../services/user.services";
 import ImageButtons from "./ImageButtons";
+import {constants} from "../constants";
 
 export default {
   name: "RecipeCard",
@@ -178,6 +182,10 @@ export default {
     },
     recipeDeleted() {
       this.$emit('recipe-deleted');
+    },
+    changePath(url) {
+      let search = 'media/'
+      return constants.MEDIA_DIR_URL + url.slice(url.indexOf(search) + search.length);
     }
   }
 }

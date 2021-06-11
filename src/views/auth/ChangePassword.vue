@@ -58,6 +58,7 @@ import User from "../../models/user";
 
 export default {
   name: "ChangePassword",
+  title: 'Смена пароля',
   data() {
     return {
       user: new User(),

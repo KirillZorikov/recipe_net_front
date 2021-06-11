@@ -16,7 +16,7 @@
           </router-link>
           <p class="card-text mb-1 mt-2 font-light"><i class="far fa-clock"></i> {{ recipe.time }} мин.</p>
         </span>
-        <img :src="recipe.image" class="thumbnail">
+        <img :src="changePath(recipe.image)" class="thumbnail">
       </span>
           <hr v-if="follow.recipes.length > 1">
         </template>
@@ -40,6 +40,7 @@
 
 <script>
 import {FollowService} from "../services/user.services";
+import {constants} from "../constants";
 
 export default {
   name: "FollowCard",
@@ -80,6 +81,10 @@ export default {
           () => {
             this.$emit('follow-deleted');
           })
+    },
+    changePath(url) {
+      let search = 'media/'
+      return constants.MEDIA_DIR_URL + url.slice(url.indexOf(search) + search.length);
     }
   }
 }
