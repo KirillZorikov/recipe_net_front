@@ -7,7 +7,7 @@
           <img :src="changePath(recipe.image)" class="card-img-top rounded-3 d-block">
         </router-link>
         <ImageButtons
-            v-if="currentUser.username === recipe.author.username || currentUser.is_staff"
+            v-if="currentUser && (currentUser.username === recipe.author.username || currentUser.is_staff)"
             :recipe="recipe" @recipe-deleted="recipeDeleted"
         />
       </div>
@@ -83,7 +83,7 @@
                            class="card-text mb-2 d-inline me-5 font-light text-dark"><i class="far fa-user"></i>
                 {{ recipe.author.name ? recipe.author.name : recipe.author.username }}
               </router-link>
-              <router-link v-if="currentUser.username === recipe.author.username || currentUser.is_staff"
+              <router-link v-if="currentUser && (currentUser.username === recipe.author.username || currentUser.is_staff)"
                            :to="{name: 'UpdateRecipe', params: {slug: recipe.slug, username: recipe.author.username}}"
                            class="text-dark font-light">
                 <i class="fas fa-pencil-alt me-1"></i>Редактировать рецепт

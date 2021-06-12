@@ -43,7 +43,7 @@
           <div class="col-8 ps-3 pe-0 d-flex flex-row">
             <div class="input-group-prepend">
               <span class="input-group-text rounded-0 rounded-start h-100">
-                  <i class="fa fa-id-badge fa-fw fs-5"></i>
+                  <i class="fa fa-lock fa-fw fs-5"></i>
               </span>
             </div>
             <input
