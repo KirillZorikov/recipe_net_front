@@ -1,4 +1,4 @@
 export const constants = {
-    API_URL: 'https://kz-api.tk:8080/api/v1/',
-    MEDIA_DIR_URL: 'https://kz-api.tk:8080/media/'
+    API_URL: 'http://127.0.0.1:8000/api/v1/',
+    MEDIA_DIR_URL: 'http://127.0.0.1:8000/media/'
 };
