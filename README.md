@@ -1,5 +1,7 @@
 # recipe_net_front
 
+http://kz-projects.tk/recipe_net
+
 Frontend for the recipe_net project. More info there: https://github.com/KirillZorikov/recipe_net
 
 ## Project setup
