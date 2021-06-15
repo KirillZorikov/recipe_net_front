@@ -12,7 +12,9 @@ class MiscUserService {
     async getImage(link) {
         const config = {
             responseType: 'blob',
-            headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json',}
+            headers: {
+                'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+            }
         };
         let fileName = link.split('/').pop();
         if (!fileName) {
@@ -23,6 +25,10 @@ class MiscUserService {
 
     async getListProducts() {
         return await axios.get(API_URL + `products`, {headers: authHeader()});
+    }
+
+    async getPurchasesCount() {
+        return await axios.get(API_URL + `purchases/count`, {headers: authHeader()});
     }
 }
 

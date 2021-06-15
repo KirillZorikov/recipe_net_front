@@ -8,6 +8,7 @@ export const store = createStore({
     },
     state: {
         page: 1,
+        purchasesCount: 0,
         recipes: [],
         filtering: []
     },
@@ -20,6 +21,9 @@ export const store = createStore({
         },
         getFiltering: state => {
             return state.filtering
+        },
+        getPurchasesCount: state => {
+            return state.purchasesCount
         }
     },
     mutations: {
@@ -31,6 +35,9 @@ export const store = createStore({
         },
         changeFiltering(state, filtering) {
             state.filtering = filtering
+        },
+        changePurchasesCount(state, newCount) {
+            state.purchasesCount = newCount
         }
     }
 })

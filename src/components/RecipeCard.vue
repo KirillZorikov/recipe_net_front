@@ -83,9 +83,10 @@
                            class="card-text mb-2 d-inline me-5 font-light text-dark"><i class="far fa-user"></i>
                 {{ recipe.author.name ? recipe.author.name : recipe.author.username }}
               </router-link>
-              <router-link v-if="currentUser && (currentUser.username === recipe.author.username || currentUser.is_staff)"
-                           :to="{name: 'UpdateRecipe', params: {slug: recipe.slug, username: recipe.author.username}}"
-                           class="text-dark font-light">
+              <router-link
+                  v-if="currentUser && (currentUser.username === recipe.author.username || currentUser.is_staff)"
+                  :to="{name: 'UpdateRecipe', params: {slug: recipe.slug, username: recipe.author.username}}"
+                  class="text-dark font-light">
                 <i class="fas fa-pencil-alt me-1"></i>Редактировать рецепт
               </router-link>
             </span>
@@ -123,7 +124,7 @@
 </template>
 
 <script>
-import {FavoritesUserService} from "../services/user.services";
+import {FavoritesUserService, MiscService} from "../services/user.services";
 import {FollowService} from "../services/user.services";
 import {PurchasesUserService} from "../services/user.services";
 import ImageButtons from "./ImageButtons";
@@ -178,6 +179,11 @@ export default {
       func(this.recipe.slug).then(
           () => {
             this.in_purchase = !this.in_purchase
+            MiscService.getPurchasesCount().then(
+                response => {
+                  this.$store.commit('changePurchasesCount', response.data['purchases_count']);
+                }
+            )
           })
     },
     recipeDeleted() {

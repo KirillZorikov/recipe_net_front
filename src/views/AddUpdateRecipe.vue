@@ -99,7 +99,7 @@
             </div>
             <div class="col-2 ps-3 pe-0">
               <input type="number" min="0" max="32767" v-model="selectedIngredient.quantity"
-                     class="form-control p-2" style="max-width: 70px;">
+                     class="form-control p-2" oninput="validity.valid||(value='');" style="max-width: 70px;">
             </div>
             <div class="col-1 pe-0 d-flex ps-0 align-items-end" style="max-height: 45px">
               <span v-if="selectedIngredient.unit">{{ selectedIngredient.unit }}</span>
@@ -118,6 +118,7 @@
                   class="form-control p-2"
                   name="time"
                   id="inputTime"
+                  oninput="validity.valid||(value='');"
                   :class="{'is-invalid': message.time}"
               >
             </div>
@@ -139,12 +140,15 @@
 
           </div>
 
-
           <div class="mb-5 row">
             <label for="inputImage" class="col-4 col-form-label p-0 fs-5 pe-3">Изображение</label>
             <div class="col-8 ps-3 pe-0 mt-1">
-              <input class="form-control" type="file" id="inputImage"
-                     accept="image/*" ref="file" v-on:change="handleFileUpload()">
+              <div class="d-flex align-items-center border border-secondary rounded-3">
+                <input type="file" class="custom-file-input w-50" id="inputImage"
+                       accept="image/*" ref="file" v-on:change="handleFileUpload()">
+                <span v-if="imageName" class="ms-4 font-light w-50">{{ imageName }}</span>
+                <span v-else class="ms-4 font-light w-50">Картинка не выбрана</span>
+              </div>
               <template v-if="imageBase64">
                 <div class="mt-3 me-3 d-flex justify-content-end">
                   <img :src="imageBase64" style="max-width: 100px">
@@ -177,8 +181,9 @@ import {constants} from "../constants";
 
 export default {
   name: "AddUpdateRecipe",
-  title () {
-    return this.$route.name === 'AddRecipe'? 'Создание рецепта': 'Редактирование рецепта'
+  routers: ['AddRecipe', 'UpdateRecipe'],
+  title() {
+    return this.$route.name === 'AddRecipe' ? 'Создание рецепта' : 'Редактирование рецепта'
   },
   components: {
     'vue-select': VueNextSelect,
@@ -202,6 +207,7 @@ export default {
       showMessage: false,
       productsByUnit: {},
       imageBase64: '',
+      imageName: '',
       loadingSubmit: false,
       loadingData: false,
       selectedIngredient: {
@@ -381,8 +387,8 @@ export default {
       }
       if (!valid) {
         window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+          top: 0,
+          behavior: 'smooth'
         })
       }
       return valid
@@ -403,6 +409,15 @@ export default {
       }
     },
     async formImage(value) {
+      if (!this.form.image) {
+        this.imageBase64 = ''
+        this.imageName = ''
+        return
+      }
+      this.imageName = this.form.image.name;
+      if (this.imageName.length > 20) {
+        this.imageName = this.imageName.slice(0, 14) + ' ... ' + this.imageName.slice(this.imageName.lastIndexOf('.') + 1);
+      }
       const fileToBase64 = async (file) =>
           new Promise((resolve, reject) => {
             const reader = new FileReader()
@@ -411,7 +426,13 @@ export default {
             reader.onerror = (e) => reject(e)
           })
       this.imageBase64 = await fileToBase64(value)
-    }
+    },
+    $route(to, from) {
+      if (to.name === 'AddRecipe' && from.name === 'UpdateRecipe') {
+        this.selectedIngredient = {title: '', unit: '', quantity: ''}
+        this.form = {title: '', description: '', time: '', ingredients: [], tags: [], image: ''}
+      }
+    },
   }
 }
 </script>
@@ -427,4 +448,30 @@ export default {
 .vue-input input {
   font-size: .9rem !important;
 }
+
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.custom-file-input::before {
+  width: 100%;
+  content: 'Выберите картинку:';
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border-right: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
 </style>

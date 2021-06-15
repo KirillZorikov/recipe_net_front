@@ -35,7 +35,9 @@
             <li class="nav-item li-nav">
               <router-link :to="{name: 'ShopList'}" class="nav-link text-dark"
                            :class="{'active-link p-0 m-2 mt-1': currentRouteName === 'ShopList'}">
-                Список покупок
+                Список покупок<span v-if="currentUser" class="badge rounded-pill bg-primary ms-2 mb-1">{{
+                  purchasesCount
+                }}</span>
               </router-link>
             </li>
           </ul>
@@ -57,16 +59,43 @@
 </template>
 
 <script>
+import {MiscService} from "../services/user.services";
+
 export default {
   name: "Nav",
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
     },
+    purchasesCount() {
+      return this.$store.state.purchasesCount;
+    },
     currentRouteName() {
       return this.$route.name;
     }
   },
+  created() {
+    this.loadPurchasesCount();
+  },
+  methods: {
+    loadPurchasesCount() {
+      if (!this.currentUser) {
+        return
+      }
+      MiscService.getPurchasesCount().then(
+          response => {
+            this.$store.commit('changePurchasesCount', response.data['purchases_count']);
+          }
+      )
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (from.name === 'Login' && to.name === 'Home') {
+        this.loadPurchasesCount();
+      }
+    },
+  }
 }
 </script>
 
@@ -74,7 +103,6 @@ export default {
 .active-link {
   color: royalblue !important;
   border-bottom: 3px solid royalblue;
-  padding-bottom: 10px;
 }
 
 .li-nav {

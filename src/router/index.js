@@ -18,92 +18,92 @@ import ResetPasswordComplete from "../views/auth/ResetPasswordComplete";
 
 const routes = [
     {
-        path: '/register',
+        path: '/recipe_net/register',
         name: 'Register',
         component: Register,
     },
     {
-        path: '/login',
+        path: '/recipe_net/login',
         name: 'Login',
         component: Login,
     },
     {
-        path: '/logout',
+        path: '/recipe_net/logout',
         name: 'Logout',
         component: Logout,
     },
     {
-        path: '/change_password',
+        path: '/recipe_net/change_password',
         name: 'ChangePassword',
         component: ChangePassword,
     },
     {
-        path: '/',
+        path: '/recipe_net/',
         name: 'Home',
         component: Home,
         props: true
     },
     {
-        path: '/recipe/:slug',
+        path: '/recipe_net/recipe/:slug',
         name: 'Recipe',
         component: Recipe,
         props: true
     },
     {
-        path: '/favorites',
+        path: '/recipe_net/favorites',
         name: 'Favorites',
         component: Favorites
     },
     {
-        path: '/recipes/:username',
+        path: '/recipe_net/recipes/:username',
         name: 'Author',
         component: Author,
         props: true
     },
     {
-        path: '/recipes/follows',
+        path: '/recipe_net/recipes/follows',
         name: 'Follow',
         component: Follow,
         props: true
     },
     {
-        path: '/purchases',
+        path: '/recipe_net/purchases',
         name: 'ShopList',
         component: ShopList
     },
     {
-        path: '/recipes/add',
+        path: '/recipe_net/recipes/add',
         name: 'AddRecipe',
         component: AddUpdateRecipe
     },
     {
-        path: '/recipes/update/:slug',
+        path: '/recipe_net/recipes/update/:slug',
         name: 'UpdateRecipe',
         component: AddUpdateRecipe,
         props: true
     },
     {
-        path: '/reset_password',
+        path: '/recipe_net/reset_password',
         name: 'ResetPassword',
         component: ResetPassword
     },
     {
-        path: '/reset_password_complete',
+        path: '/recipe_net/reset_password_complete',
         name: 'ResetPasswordComplete',
         component: ResetPasswordComplete
     },
     {
-        path: '/about-author',
+        path: '/recipe_net/about-author',
         name: 'About',
         component: About,
     },
     {
-        path: '/about-tech',
+        path: '/recipe_net/about-tech',
         name: 'Tech',
         component: Tech,
     },
     {
-        path: '/404',
+        path: '/recipe_net/404',
         name: '404',
         component: NotFound,
         props: true
@@ -128,12 +128,13 @@ router.beforeEach((to, from, next) => {
     const loggedIn = localStorage.getItem('user');
     if (!to.name) {
         next({
-            name: '404',
-            params: {from_url: to.path}
+            name: '404'
         })
     }
     if (authRequired && !loggedIn) {
-        next('/login');
+        next({
+            name: 'Login'
+        });
     } else {
         next();
     }
