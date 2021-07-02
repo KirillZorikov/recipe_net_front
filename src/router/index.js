@@ -111,7 +111,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHistory(),
     routes,
     scrollBehavior() {
         return window.scrollTo({
@@ -126,17 +126,18 @@ router.beforeEach((to, from, next) => {
         'Login', 'Logout', 'ChangePassword', 'Recipe', 'Author', 'ResetPassword'];
     const authRequired = !publicPages.includes(to.name);
     const loggedIn = localStorage.getItem('user');
+    // if (to.fullPath.startsWith('/recipe_net')) {return next(false);}
     if (!to.name) {
-        next({
+        return next({
             name: '404'
         })
     }
     if (authRequired && !loggedIn) {
-        next({
+        return next({
             name: 'Login'
         });
     } else {
-        next();
+        return next();
     }
 });
 
