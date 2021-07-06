@@ -1,8 +1,10 @@
 # recipe_net_front
 
-https://kz-projects.tk/recipe_net
+Vue 3 frontend for the recipe_net project.
 
-Frontend for the recipe_net project. More info there: https://github.com/KirillZorikov/recipe_net
+Project site: https://kz-projects.tk/recipe_net
+
+More info is here: https://github.com/KirillZorikov/recipe_net
 
 ## Project setup
 ```
