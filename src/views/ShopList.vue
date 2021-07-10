@@ -89,6 +89,7 @@ export default {
       this.loading = true;
       PurchasesUserService.deleteFromPurchases(recipe_slug).then(
           () => {
+            this.$store.commit('changePurchasesCount', this.$store.state.purchasesCount - 1);
             this.loadListPurchases();
           },
           error => {
