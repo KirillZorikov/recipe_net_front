@@ -1,4 +1,5 @@
 module.exports = {
+    outputDir: 'dist-recipe_net',
     devServer: {
         port: 8008,
         disableHostCheck: true,
