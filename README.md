@@ -2,7 +2,7 @@
 
 Vue 3 frontend for the recipe_net project.
 
-Project site: https://kz-projects.tk/recipe_net
+Project site: https://kz-projects.tk/recipe_net/
 
 More info is here: https://github.com/KirillZorikov/recipe_net
 
